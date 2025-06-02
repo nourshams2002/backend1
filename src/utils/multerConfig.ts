@@ -3,7 +3,7 @@ import path from "path";
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
-    cb(null, "uploads");
+    cb(null, path.join(__dirname, "../../uploads"));
   },
   filename: (_req, file, cb) => {
     const uniqueName = `${Date.now()}-${file.originalname}`;
@@ -11,4 +11,17 @@ const storage = multer.diskStorage({
   },
 });
 
-export const upload = multer({ storage });
+export const upload = multer({
+  storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+  fileFilter: (_req, file, cb) => {
+    const isValid =
+      file.mimetype.startsWith("image") || file.mimetype.startsWith("video");
+    if (!isValid) {
+      return cb(new Error("Only image and video files are allowed"));
+    }
+    cb(null, true);
+  },
+});

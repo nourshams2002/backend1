@@ -3,16 +3,138 @@
   <head>
     <meta charset="UTF-8" />
     <title>Upload Media</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .links {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+      }
+      .links a {
+        display: block;
+        margin: 5px 0;
+        color: #007bff;
+        text-decoration: none;
+      }
+      .links a:hover {
+        text-decoration: underline;
+      }
+      .info-box {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #e7f3ff;
+        border-left: 4px solid #007bff;
+        border-radius: 4px;
+      }
+      .info-box h4 {
+        margin-top: 0;
+        color: #0056b3;
+      }
+    </style>
   </head>
   <body>
+    <h1>Media API Test Interface</h1>
+
+    <div class="info-box">
+      <h4>🛡️ Database Fallback System</h4>
+      <p>
+        This API automatically falls back to a local JSON database if MongoDB is
+        unavailable. Check the
+        <a href="http://localhost:4000/api/status" target="_blank"
+          >database status</a
+        >
+        to see which system is currently active.
+      </p>
+    </div>
+
     <h2>Upload Image or Video</h2>
     <form
-      action="http://localhost:4000/media/upload"
+      action="http://localhost:4000/api/media/upload"
       method="POST"
       enctype="multipart/form-data"
     >
-      <input type="file" name="file" required />
+      <div class="form-group">
+        <label for="file">Select file (image or video):</label><br />
+        <input
+          type="file"
+          name="file"
+          id="file"
+          required
+          accept="image/*,video/*"
+        />
+      </div>
       <button type="submit">Upload</button>
     </form>
+
+    <div class="links">
+      <h3>📊 System Status:</h3>
+      <a href="http://localhost:4000/api/status" target="_blank"
+        >🔍 Database Status</a
+      >
+      <a href="http://localhost:4000/" target="_blank">❤️ Health Check</a>
+    </div>
+
+    <div class="links">
+      <h3>📚 Documentation & Testing:</h3>
+      <a href="http://localhost:4000/api-docs" target="_blank"
+        >📚 API Documentation (Swagger)</a
+      >
+      <a href="http://localhost:4000/api/media" target="_blank"
+        >📋 View All Media (JSON)</a
+      >
+    </div>
+
+    <div class="links">
+      <h3>🧪 Quick Test Examples:</h3>
+      <p><strong>Get all media:</strong> GET http://localhost:4000/api/media</p>
+      <p>
+        <strong>Like media:</strong> POST
+        http://localhost:4000/api/media/{id}/like
+      </p>
+      <p>
+        <strong>Unlike media:</strong> POST
+        http://localhost:4000/api/media/{id}/unlike
+      </p>
+      <p>
+        <strong>Delete media:</strong> DELETE
+        http://localhost:4000/api/media/{id}
+      </p>
+      <p>
+        <strong>Database status:</strong> GET http://localhost:4000/api/status
+      </p>
+    </div>
+
+    <div class="info-box">
+      <h4>💡 How to Test the Fallback:</h4>
+      <p>
+        1. Start the server normally (should connect to MongoDB if available)
+      </p>
+      <p>2. To test the fallback: stop MongoDB or use an invalid MONGO_URI</p>
+      <p>
+        3. Restart the server - it will automatically use the local JSON
+        database
+      </p>
+      <p>4. All API operations work the same regardless of database type!</p>
+    </div>
   </body>
 </html>
